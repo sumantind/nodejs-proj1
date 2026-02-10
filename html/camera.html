@@ -1,0 +1,52 @@
+<!--
+    write HTML tags for camera and capture image
+    get elements by id
+    add event listner
+    write code for open camera
+    capture photo
+
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>camera</title>
+</head>
+<body>
+    <video id="video"></video>
+    <button id="capturebtn" >Capture Photo</button>
+    <canvas id="canvas" style="display: none;"></canvas>
+    <img src="" id="img" style="display: none;">
+
+    <script>
+        const video = document.getElementById('video');
+        const capturebtn = document.getElementById('capturebtn');
+        const canvas = document.getElementById('canvas');
+        const img = document.getElementById('img');
+
+        async function startCam() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({video:true});
+                video.srcObject = stream;
+                video.play();
+            } catch (error) {
+                console.log(error);   
+            }
+        }
+
+        capturebtn.addEventListener('click',()=>{
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const context = canvas.getContext('2d');
+            context.drawImage(video,0,0,canvas.width,canvas.height);
+            img.src = canvas.toDataURL('image/png');
+            img.style.display = 'block';
+        })
+
+        startCam();
+    </script>
+</body>
+</html>
